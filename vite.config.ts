@@ -22,7 +22,7 @@ export default defineConfig({
     postcss: {
       plugins: [
         postCssPxToRem({
-          rootValue: 75, // 1rem的大小
+          rootValue: 37.5, // 1rem的大小
           propList: ['*'], // 需要转换的属性，这里选择全部都进行转换
           selectorBlackList: ['.van'], // 忽略转换正则匹配项
           minPixelValue: 2, // 设置要替换的最小像素值(3px会被转rem)。 默认 0
