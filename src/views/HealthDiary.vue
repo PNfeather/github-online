@@ -4,49 +4,74 @@
     <van-cell-group inset>
       <van-field label="🏙️ 选择城市" :border="false">
         <select v-model="cityId" @change="fetchWeather">
-          <option v-for="city in cities" :key="city.id" :value="city.id" :label="city.name" />
+          <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
         </select>
       </van-field>
     </van-cell-group>
 
     <!-- 天气信息 -->
     <van-cell-group inset>
-      <van-cell title="☀️ 今日天气">
+      <van-cell title="☀️ 今日天气"> </van-cell>
+      <van-cell>
         <div v-if="weather.loading">加载中...</div>
-        <div v-else-if="weather.error">{{ weather.error }}</div>
-        <div v-else>
-          <p class="text-xs">天气: {{ weather.data.text }}</p>
-          <p class="text-xs">温度: {{ weather.data.temp }}℃</p>
-          <p class="text-xs">湿度: {{ weather.data.humidity }}%</p>
+        <div v-else-if="weather.error" class="text-red-500">{{ weather.error }}</div>
+        <div v-else class="flex justify-between">
+          <p>天气: {{ weather.data.text }}</p>
+          <p>温度: {{ weather.data.temp }}℃</p>
+          <p>湿度: {{ weather.data.humidity }}%</p>
         </div>
       </van-cell>
     </van-cell-group>
 
     <!-- 饮食记录 -->
     <van-cell-group inset title="🍽️ 饮食记录">
-      <van-field v-for="meal in meals" :key="meal.key" :label="meal.label">
-        <input v-model="meal.key" input-align="right" />
+      <van-field
+        @input="saveToLocalStorage"
+        clearable
+        v-for="meal in meals"
+        :key="meal.key"
+        :label="meal.label"
+        v-model="formData[meal.key]"
+        input-align="right"
+      >
       </van-field>
     </van-cell-group>
 
     <!-- 睡眠记录 -->
-    <van-cell-group inset>
-      <van-field label="💤 睡眠记录">
-        <input v-model="formData.sleepRecord" input-align="right" />
+    <van-cell-group inset style="margin-top: 10px">
+      <van-field
+        @input="saveToLocalStorage"
+        clearable
+        label="💤 睡眠记录"
+        v-model="formData.sleepRecord"
+        input-align="right"
+      >
       </van-field>
     </van-cell-group>
 
     <!-- 情绪状态 -->
     <van-cell-group inset>
-      <van-field label="😊 情绪状态">
-        <input v-model="formData.emotionalState" input-align="right" />
+      <van-field
+        @input="saveToLocalStorage"
+        clearable
+        label="😊 情绪状态"
+        v-model="formData.emotionalState"
+        input-align="right"
+      >
       </van-field>
     </van-cell-group>
 
     <!-- 护肤流程 -->
     <van-cell-group inset title="🧴 护肤流程">
-      <van-field v-for="skin in skincare" :key="skin.key" :label="skin.label">
-        <input v-model="skin.key" input-align="right" />
+      <van-field
+        @input="saveToLocalStorage"
+        clearable
+        v-for="skin in skincare"
+        :key="skin.key"
+        :label="skin.label"
+        v-model="formData[skin.key]"
+        input-align="right"
+      >
       </van-field>
     </van-cell-group>
   </div>
@@ -65,7 +90,14 @@ interface WeatherData {
   humidity: string
 }
 
+// 城市选择
 const cityId = ref<string>('101280601')
+const cities = [
+  { id: '101280601', name: '深圳' },
+  { id: '101250801', name: '益阳' },
+]
+
+// 天气状态
 const weather = ref<{
   loading: boolean
   error: string | null
@@ -75,25 +107,6 @@ const weather = ref<{
   error: null,
   data: null,
 })
-
-const cities = [
-  { id: '101280601', name: '深圳' },
-  { id: '101250801', name: '益阳' },
-]
-
-const meals = [
-  { key: 'breakfast', label: '早餐' },
-  { key: 'lunch', label: '午餐' },
-  { key: 'supper', label: '晚餐' },
-  { key: 'otherFoods', label: '其他' },
-]
-
-const skincare = [
-  { key: 'skinCareMorning', label: '早上' },
-  { key: 'skinCareNoon', label: '中午' },
-  { key: 'skinCareDask', label: '傍晚' },
-  { key: 'skinCareNight', label: '晚上' },
-]
 
 // 表单数据
 const formData = ref({
@@ -109,30 +122,48 @@ const formData = ref({
   skinCareNight: '',
 })
 
+// 饮食记录项
+const meals = [
+  { key: 'breakfast', label: '早餐' },
+  { key: 'lunch', label: '午餐' },
+  { key: 'supper', label: '晚餐' },
+  { key: 'otherFoods', label: '其他' },
+]
+
+// 护肤流程项
+const skincare = [
+  { key: 'skinCareMorning', label: '早上' },
+  { key: 'skinCareNoon', label: '中午' },
+  { key: 'skinCareDask', label: '傍晚' },
+  { key: 'skinCareNight', label: '晚上' },
+]
+
 // 获取天气数据
-function fetchWeather() {
+async function fetchWeather() {
   weather.value.loading = true
   weather.value.error = null
 
-  fetch(`https://${WEATHER_API_KEY}/v7/weather/now?location=${cityId.value}`, {
-    headers: {
-      'X-QW-Api-Key': 'c5e38186de324e7c963b41be0436321a',
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      weather.value.data = {
-        text: data.now.text,
-        temp: data.now.temp,
-        humidity: data.now.humidity,
-      }
-      weather.value.loading = false
+  try {
+    const res = await fetch(`https://${WEATHER_API_KEY}/v7/weather/now?location=${cityId.value}`, {
+      headers: {
+        'X-QW-Api-Key': 'c5e38186de324e7c963b41be0436321a',
+      },
     })
-    .catch((err) => {
-      console.error(err)
-      weather.value.error = '天气信息加载失败'
-      weather.value.loading = false
-    })
+    const data = await res.json()
+
+    if (data.code !== '200') throw new Error('天气数据获取失败')
+
+    weather.value.data = {
+      text: data.now.text,
+      temp: data.now.temp,
+      humidity: data.now.humidity,
+    }
+  } catch (err) {
+    console.error(err)
+    weather.value.error = '天气信息加载失败'
+  } finally {
+    weather.value.loading = false
+  }
 }
 
 // 加载缓存数据
@@ -161,11 +192,13 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .health-diary {
-  background: #fff8f0;
+  background-color: #fff8f0;
   font-family: 'Comic Sans MS', cursive;
-  padding: 1rem;
+  padding: 10px;
   margin: 0;
   font-size: 14px;
+  --van-cell-group-inset-padding: 0;
+  --van-cell-group-inset-title-padding: 10px 0;
 
   h1,
   h4 {
@@ -225,10 +258,6 @@ onMounted(() => {
     justify-content: space-between;
   }
 
-  .gap-2 {
-    gap: 0.5rem;
-  }
-
   .w-full {
     width: 100%;
   }
@@ -238,7 +267,7 @@ onMounted(() => {
   }
 
   .text-xs {
-    font-size: 0.75rem;
+    font-size: 14px;
   }
 
   .font-medium {
@@ -316,6 +345,10 @@ onMounted(() => {
     padding: 0.2rem;
     border: 1px solid #ccc;
     border-radius: 0.375rem;
+  }
+
+  .text-red-500 {
+    color: #ef4444;
   }
 }
 </style>
