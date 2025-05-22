@@ -9,7 +9,7 @@ import postCssPxToRem from 'postcss-pxtorem'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/github-online/',
+  // base: '/github-online/',
   plugins: [
     vue(),
     vueJsx(),
