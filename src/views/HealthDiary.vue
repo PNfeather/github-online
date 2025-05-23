@@ -24,9 +24,9 @@
         <div v-if="weather.loading">加载中...</div>
         <div v-else-if="weather.error" class="text-red-500">{{ weather.error }}</div>
         <div v-else class="weather">
-          <p>天气: {{ weather.data.text }}</p>
-          <p>温度: {{ weather.data.temp }}℃</p>
-          <p>湿度: {{ weather.data.humidity }}%</p>
+          <p>天气: {{ weather.data?.text }}</p>
+          <p>温度: {{ weather.data?.temp }}℃</p>
+          <p>湿度: {{ weather.data?.humidity }}%</p>
         </div>
       </van-cell>
     </van-cell-group>
@@ -115,7 +115,7 @@ const cityName = computed(() => {
   return city ? city.name : ''
 })
 
-const onCityConfirm = ({ selectedValues }) => {
+const onCityConfirm = ({ selectedValues }: { selectedValues: string[] }) => {
   const [selectedCityId] = selectedValues
   cityId.value = selectedCityId
   showPopup.value = false
@@ -153,7 +153,7 @@ const meals = [
   { key: 'lunch', label: '午餐' },
   { key: 'supper', label: '晚餐' },
   { key: 'otherFoods', label: '其他' },
-]
+] as const
 
 // 护肤流程项
 const skincare = [
@@ -161,7 +161,7 @@ const skincare = [
   { key: 'skinCareNoon', label: '中午' },
   { key: 'skinCareDask', label: '傍晚' },
   { key: 'skinCareNight', label: '晚上' },
-]
+] as const
 
 // 获取天气数据
 const fetchWeather = async () => {

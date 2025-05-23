@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@types/postcss-pxtorem':
+        specifier: ^6.1.0
+        version: 6.1.0
       amfe-flexible:
         specifier: ^2.2.1
         version: 2.2.1
@@ -554,6 +557,9 @@ packages:
 
   '@types/node@22.15.21':
     resolution: {integrity: sha512-EV/37Td6c+MgKAbkcLG6vqZ2zEYHD7bvSrzqqs2RIhbA6w3x+Dqz8MZM3sP6kGTeLrdoOgKZe+Xja7tUB2DNkQ==}
+
+  '@types/postcss-pxtorem@6.1.0':
+    resolution: {integrity: sha512-kHsYTjQgllOfhi3J+xunjMKUZ3APARV/JYeOOcIVLhvPVS162S8Ir8LsZwioFFyYCSnQp+aisupiSaRWVwKyDA==}
 
   '@typescript-eslint/eslint-plugin@8.32.1':
     resolution: {integrity: sha512-6u6Plg9nP/J1GRpe/vcjjabo6Uc5YQPAMxsgQyGC/I0RuukiG1wIe3+Vtg3IrSCVJDmqK3j8adrtzXSENRtFgg==}
@@ -2015,6 +2021,10 @@ snapshots:
   '@types/node@22.15.21':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/postcss-pxtorem@6.1.0':
+    dependencies:
+      postcss: 8.5.3
 
   '@typescript-eslint/eslint-plugin@8.32.1(@typescript-eslint/parser@8.32.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:

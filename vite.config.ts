@@ -29,7 +29,7 @@ export default defineConfig({
           propList: ['*'], // 需要转换的属性，这里选择全部都进行转换
           selectorBlackList: ['.van'], // 忽略转换正则匹配项
           minPixelValue: 2, // 设置要替换的最小像素值(3px会被转rem)。 默认 0
-          exclude: [/node_modules/], // 忽略转换正则匹配项
+          exclude: /node_modules/, // 忽略转换正则匹配项
         }),
       ],
     },
