@@ -10,7 +10,8 @@
     "build-prd": "vite build --mode production",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "push-gh-pages": "git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "@types/postcss-pxtorem": "^6.1.0",
