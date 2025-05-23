@@ -100,24 +100,24 @@
       <img class="ai-img" src="./images/OIP-C (1).jpeg" alt="" @click="analyzeWithAI" />
       <van-icon class="icon" name="comment" v-if="aiAdvice" @click="showAdvancePopup = true" />
     </div>
-  </section>
-  <!-- ai建议弹窗 -->
-  <van-popup
-    v-model:show="showAdvancePopup"
-    round
-    position="center"
-    :close-on-click-overlay="false"
-  >
-    <transition name="popup-slide">
-      <div class="advance-popup-content" v-show="showAdvancePopup" ref="popupContent">
-        <van-icon class="close-icon" name="close" @click="showAdvancePopup = false" />
-        <div class="advance-popup-title">AI建议:</div>
-        <div class="advance-wrapper">
-          <p class="advance-content" v-text="aiAdvice"></p>
+    <!-- ai建议弹窗 -->
+    <van-popup
+      v-model:show="showAdvancePopup"
+      round
+      position="center"
+      :close-on-click-overlay="false"
+    >
+      <transition name="popup-slide">
+        <div class="advance-popup-content" v-show="showAdvancePopup" ref="popupContent">
+          <van-icon class="close-icon" name="close" @click="showAdvancePopup = false" />
+          <div class="advance-popup-title">AI建议:</div>
+          <div class="advance-wrapper">
+            <p class="advance-content" v-text="aiAdvice"></p>
+          </div>
         </div>
-      </div>
-    </transition>
-  </van-popup>
+      </transition>
+    </van-popup>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -387,11 +387,11 @@ const analyzeWithAI = async () => {
     - 分点列出
     - 用中文简洁说明
     `
+  showLoadingToast({
+    message: '分析中...',
+    forbidClick: true,
+  })
   try {
-    showLoadingToast({
-      message: '分析中...',
-      forbidClick: true,
-    })
     const response = await fetch('/tongyi/ai/api/v1/services/aigc/text-generation/generation', {
       method: 'POST',
       headers: {
