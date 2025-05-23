@@ -393,7 +393,7 @@ const analyzeWithAI = async () => {
   })
   try {
     const response = await fetch(
-      `https://github-online-csv9-4fu6f6qor-pnfeathers-projects.vercel.app/api/ai/route`,
+      `https://github-online-csv9-7i92c73pr-pnfeathers-projects.vercel.app/api/ai/route`,
       {
         method: 'POST',
         headers: {
