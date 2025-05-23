@@ -393,11 +393,10 @@ const analyzeWithAI = async () => {
   })
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_AI_BASE_URL}/api/v1/services/aigc/text-generation/generation`,
+      `https://github-online-csv9-4fu6f6qor-pnfeathers-projects.vercel.app/api/ai/route`,
       {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer sk-c44937c3cb7a4298a9b53148df306b03',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
