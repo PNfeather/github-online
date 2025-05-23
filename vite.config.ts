@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import { resolve } from 'path'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -36,6 +36,14 @@ export default defineConfig(({ mode }) => {
             exclude: /node_modules/, // 忽略转换正则匹配项
           }),
         ],
+      },
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            hack: `true; @import (reference) "${resolve('./src/assets/style/common.less')}";`,
+          },
+          javascriptEnabled: true,
+        },
       },
     },
     resolve: {
