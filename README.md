@@ -2,7 +2,5 @@
 
 个人实验项目
 
-vite.config.js:
-base: '/github-online/',
-
+build
 git subtree push --prefix dist origin gh-pages
