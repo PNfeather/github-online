@@ -16,13 +16,6 @@ export default defineConfig(({ mode }) => {
   const BASE_URL = env.VITE_BASE_URL
   return {
     base: BASE_URL || '/',
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: undefined,
-        },
-      },
-    },
     plugins: [
       vue(),
       vueJsx(),
