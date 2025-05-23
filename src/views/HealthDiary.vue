@@ -45,8 +45,8 @@
       />
     </van-cell-group>
 
-    <!-- 睡眠记录 -->
     <van-cell-group inset style="margin-top: 10px">
+      <!-- 睡眠记录 -->
       <van-field
         @input="saveToLocalStorage"
         placeholder="请输入~"
@@ -55,10 +55,7 @@
         v-model="formData.sleepRecord"
         input-align="right"
       />
-    </van-cell-group>
-
-    <!-- 情绪状态 -->
-    <van-cell-group inset>
+      <!-- 情绪状态 -->
       <van-field
         @input="saveToLocalStorage"
         placeholder="请输入~"
@@ -227,6 +224,11 @@ onMounted(() => {
   font-size: 14px;
   --van-cell-group-inset-padding: 0;
   --van-cell-group-inset-title-padding: 10px 0;
+  --van-cell-group-title-color: #222;
+
+  :deep(.van-cell-group) {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
   .weather {
     display: flex;
@@ -235,14 +237,6 @@ onMounted(() => {
 
   .text-red-500 {
     color: #ef4444;
-  }
-
-  input,
-  select {
-    font-size: 0.8rem;
-    padding: 0.2rem;
-    border: 1px solid #ccc;
-    border-radius: 0.375rem;
   }
 }
 </style>

@@ -7,9 +7,11 @@ import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
 import postCssPxToRem from 'postcss-pxtorem'
 
+console.log(process.env.NODE_ENV)
+
 // https://vite.dev/config/
 export default defineConfig({
-  // base: '/github-online/',
+  base: process.env.NODE_ENV === 'development' ? '/' : '/github-online/',
   plugins: [
     vue(),
     vueJsx(),
