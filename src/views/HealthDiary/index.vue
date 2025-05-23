@@ -23,7 +23,7 @@
       </van-popup>
 
       <!-- 天气信息 -->
-      <van-cell-group inset style="margin-top: 10px">
+      <van-cell-group inset style="margin-top: 6px">
         <van-cell title="☀️ 今日天气"> </van-cell>
         <van-cell>
           <div v-if="weather.loading">加载中...</div>
@@ -52,7 +52,7 @@
         />
       </van-cell-group>
 
-      <van-cell-group inset style="margin-top: 10px">
+      <van-cell-group inset style="margin-top: 6px">
         <!-- 睡眠记录 -->
         <van-field
           @input="saveToLocalStorage"
@@ -392,19 +392,22 @@ const analyzeWithAI = async () => {
     forbidClick: true,
   })
   try {
-    const response = await fetch('/tongyi/ai/api/v1/services/aigc/text-generation/generation', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer sk-c44937c3cb7a4298a9b53148df306b03',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'qwen-plus',
-        input: {
-          prompt,
+    const response = await fetch(
+      `${import.meta.env.VITE_AI_BASE_URL}/api/v1/services/aigc/text-generation/generation`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer sk-c44937c3cb7a4298a9b53148df306b03',
+          'Content-Type': 'application/json',
         },
-      }),
-    })
+        body: JSON.stringify({
+          model: 'qwen-plus',
+          input: {
+            prompt,
+          },
+        }),
+      },
+    )
     closeToast()
 
     if (!response.ok) throw new Error('AI 分析失败')
@@ -440,6 +443,7 @@ onMounted(() => {
     --van-cell-group-inset-padding: 0;
     --van-cell-group-inset-title-padding: 10px 0;
     --van-cell-group-title-color: #222;
+    --van-cell-vertical-padding: 5px;
 
     .van-cell-group {
       border: 1px solid #eee;
