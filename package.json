@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/postcss-pxtorem": "^6.1.0",
     "amfe-flexible": "^2.2.1",
+    "axios": "^1.9.0",
     "html2canvas": "^1.4.1",
     "less": "^4.3.0",
     "less-loader": "^12.3.0",

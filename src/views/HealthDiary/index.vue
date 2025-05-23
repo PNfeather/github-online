@@ -10,6 +10,7 @@
           clickable
           v-model="cityName"
           input-align="right"
+          placeholder="请选择~"
           @click="showPopup = true"
         />
       </van-cell-group>
@@ -97,9 +98,12 @@ import {
   Popup as VanPopup,
   Picker as VanPicker,
   Button as VanButton,
+  showToast,
 } from 'vant'
 import html2canvas from 'html2canvas'
 import moment from 'moment'
+import axios from 'axios'
+import cityColumns, { citys } from './data/city'
 
 const WEATHER_API_KEY = 'mj7fby77br.re.qweatherapi.com'
 const preKey = 'QIU_DAN_APP_DATA'
@@ -110,28 +114,29 @@ interface WeatherData {
   humidity: string
 }
 
+interface Adress {
+  text: string
+  value: string
+  children?: Adress[]
+}
+
 // 需要截图元素
 const healthDiary = ref()
 
 // 城市选择
-const cityId = ref<string>('101280601')
-const cities = [
-  { id: '101280601', name: '深圳' },
-  { id: '101250801', name: '益阳' },
-]
+const cityId = ref<string>('')
 
 const showPopup = ref(false)
-const cityColumns = cities.map((city) => ({ text: city.name, value: city.id }))
 
 const cityName = computed(() => {
-  const city = cities.find((city) => city.id === cityId.value)
-  return city ? city.name : ''
+  const city = citys.find((city) => city.value === cityId.value)
+  return city ? city.text : ''
 })
 
 //  城市选择确认
-const onCityConfirm = ({ selectedValues }: { selectedValues: string[] }) => {
-  const [selectedCityId] = selectedValues
-  cityId.value = selectedCityId
+const onCityConfirm = ({ selectedOptions }: { selectedOptions: Adress[] }) => {
+  const [, city] = selectedOptions
+  cityId.value = city.value
   showPopup.value = false
   fetchWeather()
 }
@@ -249,14 +254,64 @@ const captureAndSave = async () => {
     link.click()
   } catch (err) {
     console.error('截图失败:', err)
-    alert('截图保存失败，请重试')
+    showToast('截图保存失败，请重试')
+  }
+}
+
+// 配置高德地图 Web 服务 API Key
+const AMap_API_KEY = '597f98db74a4bcdf878c3273cd6cec43'
+// 获取当前位置并设置城市
+const fetchCurrentLocation = async () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords
+
+        try {
+          // 使用高德地图逆地理编码 API 获取城市信息
+          const res = await axios.get('https://restapi.amap.com/v3/geocode/regeo', {
+            params: {
+              key: AMap_API_KEY,
+              location: `${longitude},${latitude}`,
+              extensions: 'all',
+              output: 'JSON',
+            },
+          })
+
+          const data = res.data
+          if (data.status === '1') {
+            const cityInfo = data.regeocode.addressComponent
+            const cityName = cityInfo.city || cityInfo.province
+            const matchedCity = citys.find((city) => city.text === cityName)
+
+            if (matchedCity) {
+              cityId.value = matchedCity.value
+              fetchWeather()
+            } else {
+              showToast(`未找到对应的城市：${cityName}，请手动选择`)
+            }
+          } else {
+            showToast('无法获取地理位置信息，请手动选择')
+          }
+        } catch (err) {
+          console.error('获取位置失败:', err)
+          showToast('获取位置失败，请检查网络或权限')
+        }
+      },
+      (error) => {
+        console.error('定位失败:', error.message)
+        showToast('定位失败，请手动选择城市')
+      },
+    )
+  } else {
+    showToast('您的浏览器不支持地理位置功能')
   }
 }
 
 // 初始化
 onMounted(() => {
   loadFromLocalStorage()
-  fetchWeather()
+  fetchCurrentLocation()
 })
 </script>
 

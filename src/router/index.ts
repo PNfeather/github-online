@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HealthDiary from '@/views/HealthDiary.vue'
-import About from '@/views/AboutView.vue'
+import HealthDiary from '@/views/HealthDiary/index.vue'
+import About from '@/views/AboutView/index.vue'
 
 const routes = [
   {
