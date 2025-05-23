@@ -55,6 +55,13 @@ export default defineConfig(({ mode }) => {
       port: 8088, //端口号
       host: '0.0.0.0', //ip地址 或 '0.0.0.0' 或 "loaclhost"
       open: true, //启动后是否自动打开浏览器
+      proxy: {
+        '/tongyi/ai': {
+          target: 'https://dashscope.aliyuncs.com',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/tongyi\/ai/, ''),
+        },
+      },
     },
   }
 })
