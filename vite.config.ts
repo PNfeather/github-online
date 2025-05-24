@@ -57,7 +57,7 @@ export default defineConfig(({ mode }) => {
       open: true, //启动后是否自动打开浏览器
       proxy: {
         '/tongyi/ai': {
-          target: 'https://dashscope.aliyuncs.com',
+          target: env.VITE_CURRENT_VITE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/tongyi\/ai/, ''),
         },
