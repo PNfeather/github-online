@@ -390,6 +390,7 @@ const analyzeWithAI = async () => {
   showLoadingToast({
     message: '分析中...',
     forbidClick: true,
+    duration: 0,
   })
   try {
     const response = await fetch(
