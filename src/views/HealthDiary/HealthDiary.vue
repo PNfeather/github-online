@@ -138,7 +138,8 @@ import moment from 'moment'
 import axios from 'axios'
 import cityColumns, { citys } from './data/city'
 
-const WEATHER_API_KEY = 'mj7fby77br.re.qweatherapi.com'
+const BASE_RUL = `${import.meta.env.VITE_AI_BASE_URL || import.meta.env.VITE_CURRENT_VITE_URL}`
+
 const preKey = 'QIU_DAN_APP_DATA'
 
 interface WeatherData {
@@ -232,12 +233,12 @@ const fetchWeather = async () => {
   weather.value.error = null
 
   try {
-    const res = await fetch(`https://${WEATHER_API_KEY}/v7/weather/now?location=${cityId.value}`, {
-      headers: {
-        'X-QW-Api-Key': 'c5e38186de324e7c963b41be0436321a',
+    const res = await axios.get(`${BASE_RUL}/api/weather`, {
+      params: {
+        cityId: cityId.value,
       },
     })
-    const data = await res.json()
+    const { data } = res
 
     if (data.code !== '200') throw new Error('天气数据获取失败')
 
@@ -302,8 +303,6 @@ const captureAndSave = async () => {
   }
 }
 
-// 配置高德地图 Web 服务 API Key
-const AMap_API_KEY = '597f98db74a4bcdf878c3273cd6cec43'
 // 获取当前位置并设置城市
 const fetchCurrentLocation = async () => {
   if (navigator.geolocation) {
@@ -313,12 +312,10 @@ const fetchCurrentLocation = async () => {
 
         try {
           // 使用高德地图逆地理编码 API 获取城市信息
-          const res = await axios.get('https://restapi.amap.com/v3/geocode/regeo', {
+          const res = await axios.get(`${BASE_RUL}/api/regeo`, {
             params: {
-              key: AMap_API_KEY,
-              location: `${longitude},${latitude}`,
-              extensions: 'all',
-              output: 'JSON',
+              longitude,
+              latitude,
             },
           })
 

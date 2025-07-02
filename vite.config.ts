@@ -56,10 +56,10 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0', //ip地址 或 '0.0.0.0' 或 "loaclhost"
       open: true, //启动后是否自动打开浏览器
       proxy: {
-        '/tongyi/ai': {
+        '/custom/ai': {
           target: env.VITE_CURRENT_VITE_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/tongyi\/ai/, ''),
+          rewrite: (path) => path.replace(/^\/custom\/ai/, ''),
         },
       },
     },
