@@ -8,6 +8,6 @@
 ## 部署到gitpage
 
 ```bsh
-npm run build
+npm run build-prd
 git subtree push --prefix dist origin gh-pages
 ```
