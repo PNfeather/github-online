@@ -11,3 +11,7 @@
 npm run build-prd
 git subtree push --prefix dist origin gh-pages
 ```
+
+## 预览页面
+
+[直达](https://pnfeather.github.io/github-online/#/)
