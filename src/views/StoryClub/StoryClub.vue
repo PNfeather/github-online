@@ -18,7 +18,6 @@
               :type="isRecording ? 'danger' : 'primary'"
               size="large"
               block
-              :loading="isRecording"
               @click="isRecording ? stopRecording() : startRecording()"
             >
               {{ isRecording ? '⏹️ 停止录音' : '🎤 开始录音' }}
