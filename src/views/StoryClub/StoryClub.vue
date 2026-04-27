@@ -10,21 +10,10 @@
       <van-cell>
         <template #value>
           <div class="controls">
-            <van-button
-              v-if="!isRecording"
-              type="primary"
-              size="large"
-              @click="startRecording"
-            >
+            <van-button v-if="!isRecording" type="primary" size="large" @click="startRecording">
               🎤 开始录音
             </van-button>
-            <van-button
-              v-else
-              type="danger"
-              size="large"
-              @click="stopRecording"
-              loading
-            >
+            <van-button v-else type="danger" size="large" @click="stopRecording" loading>
               ⏹️ 停止录音
             </van-button>
           </div>
@@ -32,7 +21,9 @@
       </van-cell>
       <van-cell v-if="audioBlob">
         <template #value>
-          <div class="status success">✅ 录音已就绪 ({{ (audioBlob.size / 1024).toFixed(1) }} KB)</div>
+          <div class="status success">
+            ✅ 录音已就绪 ({{ (audioBlob.size / 1024).toFixed(1) }} KB)
+          </div>
         </template>
       </van-cell>
     </van-cell-group>
@@ -89,7 +80,12 @@
         <template #value>
           <div class="audio-player">
             <audio controls :src="generatedAudioUrl"></audio>
-            <van-button type="primary" size="small" :href="generatedAudioUrl" download="minimax_voice.mp3">
+            <van-button
+              type="primary"
+              size="small"
+              :href="generatedAudioUrl"
+              download="minimax_voice.mp3"
+            >
               下载音频
             </van-button>
           </div>
@@ -101,7 +97,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Button as VanButton, CellGroup as VanCellGroup, Cell as VanCell, Field as VanField, showToast } from 'vant'
+import {
+  Button as VanButton,
+  CellGroup as VanCellGroup,
+  Cell as VanCell,
+  Field as VanField,
+  showToast,
+} from 'vant'
+import { getVoiceId } from '@/views/api.ts'
 
 // --- 状态定义 ---
 const audioBlob = ref(null)
@@ -165,10 +168,7 @@ const cloneVoice = async () => {
   formData.append('voiceName', 'VueUserVoice')
 
   try {
-    const response = await fetch('/api/voice/clone', {
-      method: 'POST',
-      body: formData,
-    })
+    const response = await getVoiceId(fromData)
 
     const data = await response.json()
 
