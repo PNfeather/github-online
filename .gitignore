@@ -29,3 +29,15 @@ coverage
 
 *.tsbuildinfo
 .vercel
+
+# OpenSpec
+openspec/
+.openspec/
+
+# AI-generated test files
+*ai*.test.ts
+*ai*.spec.ts
+*gen*.test.ts
+*gen*.spec.ts
+*generated*.test.ts
+*generated*.spec.ts

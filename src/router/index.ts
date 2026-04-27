@@ -11,14 +11,6 @@ const routes = [
       title: '健康日记',
     },
   },
-  {
-    path: '/about',
-    name: 'About',
-    component: About,
-    meta: {
-      title: '关于',
-    },
-  },
 ]
 
 const router = createRouter({
