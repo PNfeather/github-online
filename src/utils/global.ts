@@ -43,7 +43,7 @@ async function get<T = unknown>(
 
 async function post<T = unknown>(
   url: string,
-  data?: Record<string, unknown>,
+  data?: unknown,
   options: RequestOptions = {}
 ): Promise<T> {
   const { loading = true, loadingText = '加载中...' } = options

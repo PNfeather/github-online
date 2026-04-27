@@ -46,6 +46,6 @@ export interface CloneVoiceResponse {
 export async function getVoiceId(formData: FormData): Promise<CloneVoiceResponse> {
   return UTILS.request.post<CloneVoiceResponse>(
     '/api/getVoiceId',
-    formData as unknown as Record<string, unknown>,
+    formData,
   )
 }
