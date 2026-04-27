@@ -41,3 +41,9 @@ openspec/
 *gen*.spec.ts
 *generated*.test.ts
 *generated*.spec.ts
+
+.playwright-mcp
+
+dist
+
+.sisyphus
