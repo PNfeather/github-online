@@ -135,10 +135,7 @@ import {
 } from 'vant'
 import html2canvas from 'html2canvas'
 import moment from 'moment'
-import axios from 'axios'
 import cityColumns, { citys } from './data/city'
-
-const BASE_RUL = `${import.meta.env.VITE_AI_BASE_URL || import.meta.env.VITE_CURRENT_VITE_URL}`
 
 const preKey = 'QIU_DAN_APP_DATA'
 
@@ -153,8 +150,6 @@ interface Adress {
   value: string
   children?: Adress[]
 }
-
-// 需要截图元素
 const healthDiary = ref()
 
 // ai建议弹窗元素
@@ -233,12 +228,7 @@ const fetchWeather = async () => {
   weather.value.error = null
 
   try {
-    const res = await axios.get(`${BASE_RUL}/api/weather`, {
-      params: {
-        cityId: cityId.value,
-      },
-    })
-    const { data } = res
+    const data = await window.UTILS.request.get<{ code: string; now: { text: string; temp: string; humidity: string } }>('/api/weather', { cityId: cityId.value })
 
     if (data.code !== '200') throw new Error('天气数据获取失败')
 
@@ -312,14 +302,7 @@ const fetchCurrentLocation = async () => {
 
         try {
           // 使用高德地图逆地理编码 API 获取城市信息
-          const res = await axios.get(`${BASE_RUL}/api/regeo`, {
-            params: {
-              longitude,
-              latitude,
-            },
-          })
-
-          const data = res.data
+          const data = await window.UTILS.request.get<{ status: string; regeocode: { addressComponent: { city?: string; province?: string } } }>('/api/regeo', { longitude, latitude })
           if (data.status === '1') {
             const cityInfo = data.regeocode.addressComponent
             const cityName = cityInfo.city || cityInfo.province
@@ -390,20 +373,9 @@ const analyzeWithAI = async () => {
     duration: 0,
   })
   try {
-    const response = await fetch(`${BASE_RUL}/api/ai`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt,
-      }),
-    })
+    const result = await window.UTILS.request.post<{ output: { text: string } }>('/api/ai', { prompt })
     closeToast()
 
-    if (!response.ok) throw new Error('AI 分析失败')
-
-    const result = await response.json()
     aiAdvice.value = result.output.text
     showAdvancePopup.value = true
   } catch (err) {

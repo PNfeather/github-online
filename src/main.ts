@@ -1,4 +1,5 @@
 import 'amfe-flexible'
+import './utils/global'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
