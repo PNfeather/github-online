@@ -136,6 +136,7 @@ import {
 import html2canvas from 'html2canvas'
 import moment from 'moment'
 import cityColumns, { citys } from './data/city'
+import { getWeather, getRegeo, analyzeAI } from '../api'
 
 const preKey = 'QIU_DAN_APP_DATA'
 
@@ -228,7 +229,7 @@ const fetchWeather = async () => {
   weather.value.error = null
 
   try {
-    const data = await window.UTILS.request.get<{ code: string; now: { text: string; temp: string; humidity: string } }>('/api/weather', { cityId: cityId.value })
+    const data = await getWeather(cityId.value)
 
     if (data.code !== '200') throw new Error('天气数据获取失败')
 
@@ -302,7 +303,7 @@ const fetchCurrentLocation = async () => {
 
         try {
           // 使用高德地图逆地理编码 API 获取城市信息
-          const data = await window.UTILS.request.get<{ status: string; regeocode: { addressComponent: { city?: string; province?: string } } }>('/api/regeo', { longitude, latitude })
+          const data = await getRegeo(longitude, latitude)
           if (data.status === '1') {
             const cityInfo = data.regeocode.addressComponent
             const cityName = cityInfo.city || cityInfo.province
@@ -373,7 +374,7 @@ const analyzeWithAI = async () => {
     duration: 0,
   })
   try {
-    const result = await window.UTILS.request.post<{ output: { text: string } }>('/api/ai', { prompt })
+    const result = await analyzeAI(prompt)
     closeToast()
 
     aiAdvice.value = result.output.text
