@@ -390,18 +390,15 @@ const analyzeWithAI = async () => {
     duration: 0,
   })
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_AI_BASE_URL || import.meta.env.VITE_CURRENT_VITE_URL}/api/ai`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt,
-        }),
+    const response = await fetch(`${BASE_RUL}/api/ai`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      body: JSON.stringify({
+        prompt,
+      }),
+    })
     closeToast()
 
     if (!response.ok) throw new Error('AI 分析失败')
