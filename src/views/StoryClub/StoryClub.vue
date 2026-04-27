@@ -168,7 +168,7 @@ const cloneVoice = async () => {
   formData.append('voiceName', 'VueUserVoice')
 
   try {
-    const response = await getVoiceId(fromData)
+    const response = await getVoiceId(formData)
 
     const data = await response.json()
 
