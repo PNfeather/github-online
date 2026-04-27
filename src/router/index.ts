@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HealthDiary from '@/views/HealthDiary/HealthDiary.vue'
+import StoryClub from '@/views/StoryClub/StoryClub.vue'
 
 const routes = [
   {
@@ -8,6 +9,14 @@ const routes = [
     component: HealthDiary,
     meta: {
       title: '健康日记',
+    },
+  },
+  {
+    path: '/StoryClub',
+    name: 'StoryClub',
+    component: StoryClub,
+    meta: {
+      title: '故事吧',
     },
   },
 ]
