@@ -36,3 +36,16 @@ export async function getRegeo(longitude: number, latitude: number): Promise<Reg
 export async function analyzeAI(prompt: string): Promise<AIResponse> {
   return UTILS.request.post<AIResponse>('/api/ai', { prompt })
 }
+
+export interface CloneVoiceResponse {
+  success: boolean
+  voice_id?: string
+  error?: string
+}
+
+export async function getVoiceId(formData: FormData): Promise<CloneVoiceResponse> {
+  return UTILS.request.post<CloneVoiceResponse>(
+    '/api/getVoiceId',
+    formData as unknown as Record<string, unknown>,
+  )
+}
