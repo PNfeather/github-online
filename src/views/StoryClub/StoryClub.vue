@@ -101,7 +101,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Button as VanButton, CellGroup as VanCellGroup, Cell as VanCell, Field as VanField } from 'vant'
+import { Button as VanButton, CellGroup as VanCellGroup, Cell as VanCell, Field as VanField, showToast } from 'vant'
 
 // --- 状态定义 ---
 const audioBlob = ref(null)
@@ -138,7 +138,7 @@ const startRecording = async () => {
     mediaRecorder.start()
     isRecording.value = true
   } catch (err) {
-    alert('无法访问麦克风，请检查权限设置')
+    showToast('无法访问麦克风，请检查权限设置')
     console.error(err)
   }
 }
@@ -174,13 +174,13 @@ const cloneVoice = async () => {
 
     if (data.success) {
       voiceId.value = data.voice_id
-      alert('声音克隆成功！')
+      showToast('声音克隆成功！')
     } else {
-      alert('克隆失败: ' + (data.error || '未知错误'))
+      showToast('克隆失败: ' + (data.error || '未知错误'))
     }
   } catch (error) {
     console.error('Clone Error:', error)
-    alert('服务器连接失败')
+    showToast('服务器连接失败')
   } finally {
     loading.value = false
     step.value = ''
@@ -211,7 +211,7 @@ const synthesizeVoice = async () => {
       const url = URL.createObjectURL(blob)
       generatedAudioUrl.value = url
     } else {
-      alert('生成失败，请检查后端日志')
+      showToast('生成失败，请检查后端日志')
     }
   } catch (error) {
     console.error('TTS Error:', error)
